@@ -1,25 +1,52 @@
 import { useState } from "react";
+import { TodoForm } from "./TodoForm";
+
 import "./App.css";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
+  function toggleTodo(id, completed) {
+    setTodos((currentTodo) => {
+      currentTodo.map((todo) => {
+        if (todo.id == id) {
+          return {
+            ...todo,
+            completed,
+          };
+        }
+        return todo;
+      });
+    });
+  }
+
+  function deleteTodo(id) {
+    setTodos((currentTodo) => {
+      currentTodo.filter((todo) => todo.id !== id);
+    });
+  }
+
   return (
     <>
-      <form className="new-item-form">
-        <div className="form-row">
-          <label htmlFor="item">New item</label>
-          <input type="text" id="item"></input>
-        </div>
-        <button className="btn">Add</button>
-      </form>
-
+      <TodoForm handleSubmit={handleSubmit} />
       <h1 className="header">Todo List</h1>
       <ul className="list">
-        <li className="list-item">
-          <label>
-            <input type="checkbox" id="list-item" />
-          </label>
-          <btn className="btn btn-danger">Delete</btn>
-        </li>
+        {todos.length === 0 && "No Todos"}
+        {todos.map((item) => {
+          <li className="list-item">
+            <label>
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+              />
+              {todo.title}
+            </label>
+            <btn onClick={() => deleteTodo(todo.id)} className="btn btn-danger">
+              Delete
+            </btn>
+          </li>;
+        })}
       </ul>
     </>
   );
