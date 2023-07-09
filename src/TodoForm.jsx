@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-export function TodoForm() {
+export function TodoForm({ addTodo }) {
   const [newItem, setNewItem] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    //update setTodos.
+    if (newItem === "") return;
+    addTodo(newItem);
     setNewItem("");
   }
   return (
@@ -17,7 +18,7 @@ export function TodoForm() {
           id="item"
           value={newItem}
           onChange={(e) => setNewItem(e.target.value)}
-        ></input>
+        />
       </div>
       <button className="btn">Add</button>
     </form>
